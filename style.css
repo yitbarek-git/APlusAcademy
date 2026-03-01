@@ -184,9 +184,7 @@ body {
   transform: rotate(-45deg) translate(8px, -8px);
 }
 
-/*============================
-  4. MOBILE RESPONSIVE NAV
-==============================*/
+/* MOBILE RESPONSIVE NAV*/
 @media (max-width: 990px) {
   .header {
     padding: 1rem 5%;
@@ -242,9 +240,7 @@ body {
   }
 }
 
-/*============================
-  5. REVEAL ANIMATIONS
-==============================*/
+/* Reveal Animations */
 .reveal {
   opacity: 0;
   transform: translateY(60px);
@@ -256,9 +252,7 @@ body {
   transform: translateY(0);
 }
 
-/*============================
-  6. SECTION HEADERS
-==============================*/
+/*SECTION HEADERS*/
 section {
   padding: 8rem 10%;
 }
@@ -700,8 +694,8 @@ section {
 
 .about-image img {
   width: 100%;
-  max-width: 400px;
-  border-radius: 30px;
+  max-width: 200px;
+  border-radius: 50%;
   border: 3px solid var(--primary);
   box-shadow: var(--shadow-lg);
   transition: var(--transition);
@@ -819,7 +813,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem;
+  padding: 1rem;
   border-radius: 20px;
   text-decoration: none;
   color: white;
@@ -850,7 +844,7 @@ textarea {
 }
 
 .social-card i {
-  font-size: 5rem;
+  font-size: 3rem;
   margin-bottom: 1.5rem;
 }
 
