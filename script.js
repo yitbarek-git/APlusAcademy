@@ -159,3 +159,36 @@ window.addEventListener("scroll", () => {
     logo.style.opacity = "1";
   }
 });
+
+// COUNTER ANIMATION (Subscribers & Videos)
+const counters = document.querySelectorAll(".counter");
+
+counters.forEach(counter => {
+  const updateCounter = () => {
+
+    const target = +counter.getAttribute("data-target");
+    const current = +counter.innerText;
+
+    const increment = target / 120;
+
+    if (current < target) {
+      counter.innerText = Math.ceil(current + increment);
+      setTimeout(updateCounter, 30);
+    } else {
+      counter.innerText = formatNumber(target);
+    }
+
+  };
+
+  updateCounter();
+});
+
+
+function formatNumber(num) {
+
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K+";
+  }
+
+  return num + "+";
+}
