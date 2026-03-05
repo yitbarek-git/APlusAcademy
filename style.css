@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
-/*============================
-  1. CSS VARIABLES / THEME
-==============================*/
+/* 1. CSS VARIABLES / THEME */
 :root {
   --bg: #000;
   --text: #fff;
@@ -19,18 +17,16 @@
 }
 
 body.light {
-  --bg: #f0f0f0;
+  --bg: #e5e5c6;
   --text: #222;
-  --nav-bg: #ffffff;
+  --nav-bg: #e5e5c6;
   --card-bg: #ffffff;
   --border-color: #ddd;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-/*============================
-  2. GLOBAL RESET & BASE
-==============================*/
+/* GLOBAL RESET & BASE */
 *,
 *::before,
 *::after {
@@ -42,7 +38,7 @@ body.light {
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Prevents header from covering content */
+  scroll-padding-top: 80px; /* to Prevent header from covering content */
 }
 
 body {
@@ -52,18 +48,19 @@ body {
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
   padding-top: 80px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
-/*============================
-  3. HEADER & NAVIGATION
-==============================*/
+/* HEADER & NAVIGATION */
 .header {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   width: 100%;
-  padding: 1rem 10%;
+  padding: 1rem 3%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -75,7 +72,8 @@ body {
 
 .logo {
   font-size: 3rem;
-  font-weight: 800;
+  text-decoration: none;
+  font-weight: 900;
   color: var(--primary);
   cursor: pointer;
   transition: transform 0.5s ease;
@@ -116,7 +114,7 @@ body {
 }
 
 .navbar a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -5px;
   left: 0;
@@ -200,14 +198,16 @@ body {
 
   .navbar {
     position: fixed;
-    top: 80px;
+    top: 60px;
     right: -100%;
     width: 280px;
-    height: calc(100vh - 80px);
+    height: calc(100vh - 61px);
     background: var(--nav-bg);
     padding: 2rem;
     transition: 0.4s ease;
-    border-left: 3px solid var(--primary);
+    border-left: 2px solid var(--primary);
+    border-bottom: 1px dashed var(--primary);
+    border-top: 1px dashed var(--primary);
     box-shadow: -5px 0 30px var(--shadow);
   }
 
@@ -218,7 +218,7 @@ body {
   .navbar ul {
     flex-direction: column;
     gap: 2rem;
-    align-items: flex-start;
+    align-items: start;
   }
 
   .navbar li {
@@ -243,7 +243,7 @@ body {
 /* Reveal Animations */
 .reveal {
   opacity: 0;
-  transform: translateY(60px);
+  transform: translateY(80px);
   transition: all 0.8s ease;
 }
 
@@ -275,7 +275,7 @@ section {
 }
 
 .highlight::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 5px;
   left: 0;
@@ -294,9 +294,7 @@ section {
   margin: 0 auto;
 }
 
-/*============================
-  7. HERO SECTION
-==============================*/
+/* HERO SECTION */
 .hero-section {
   min-height: calc(100vh - 80px);
   display: flex;
@@ -416,9 +414,7 @@ section {
   color: var(--primary);
 }
 
-/*============================
-  8. COURSES SECTION
-==============================*/
+/* COURSES SECTION*/
 .courses-section {
   background: var(--nav-bg);
 }
@@ -440,7 +436,7 @@ section {
 }
 
 .course-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -450,13 +446,15 @@ section {
   transition: var(--transition);
 }
 
-.course-card:hover {
+.course-card:hover,
+.course-card:focus-within {
   transform: translateY(-10px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary);
 }
 
-.course-card:hover::before {
+.course-card:hover::before,
+.course-card:focus::before {
   height: 100%;
 }
 
@@ -475,7 +473,7 @@ section {
 .credit-hours {
   font-size: 1.4rem;
   color: var(--text);
-  opacity: 0.7;
+  opacity: 0.5;
   margin-bottom: 1.5rem;
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -484,7 +482,7 @@ section {
 }
 
 .course-description {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin-bottom: 2rem;
   opacity: 0.8;
 }
@@ -520,9 +518,7 @@ section {
   gap: 1.5rem;
 }
 
-/*============================
-  9. RESOURCES SECTION
-==============================*/
+/* RESOURCES SECTION */
 .resources-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -621,9 +617,7 @@ section {
   font-weight: 500;
 }
 
-/*============================
-  10. ABOUT SECTION
-==============================*/
+/* ABOUT SECTION */
 .about-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -706,11 +700,9 @@ section {
   box-shadow: 0 30px 50px var(--primary);
 }
 
-/*============================
-  11. REGISTRATION SECTION
-==============================*/
+/* REGISTRATION SECTION */
 .registration-section {
-  background: var(--nav-bg);
+  background: var(--bg);
 }
 
 .form-container {
@@ -726,8 +718,8 @@ section {
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .form-group {
@@ -799,14 +791,12 @@ textarea {
   margin-top: 3rem;
 }
 
-/*============================
-  12. CONTACT / SOCIAL SECTION
-==============================*/
+/* CONTACT / SOCIAL SECTION */
 .social-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 3rem;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
 }
 
 .social-card {
@@ -823,7 +813,7 @@ textarea {
 }
 
 .social-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -859,14 +849,18 @@ textarea {
   opacity: 0.9;
 }
 
-.social-card.youtube { background: #ff0000; }
-.social-card.telegram { background: #0088cc; }
-.social-card.tiktok { 
+.social-card.youtube {
+  background: #ff0000;
+}
+.social-card.telegram {
+  background: #0088cc;
+}
+.social-card.tiktok {
   background: #000000;
   position: relative;
 }
 .social-card.tiktok::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -882,7 +876,9 @@ textarea {
   position: relative;
   z-index: 1;
 }
-.social-card.instagram { background: linear-gradient(45deg, #f09433, #d62976, #962fbf); }
+.social-card.instagram {
+  background: linear-gradient(45deg, #f09433, #d62976, #962fbf);
+}
 
 .quick-contact {
   text-align: center;
@@ -923,12 +919,10 @@ textarea {
   color: var(--primary);
 }
 
-/*============================
-  13. FOOTER
-==============================*/
+/* FOOTER*/
 footer {
   background: var(--nav-bg);
-  padding: 5rem 10% 3rem;
+  padding: 3rem 10%;
   border-top: 1px solid var(--border-color);
 }
 
@@ -958,7 +952,7 @@ footer {
   display: flex;
   gap: 3rem;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .footer-links a {
@@ -978,9 +972,7 @@ footer {
   opacity: 0.7;
 }
 
-/*============================
-  14. RESPONSIVE DESIGN
-==============================*/
+/* RESPONSIVE DESIGN */
 @media (max-width: 990px) {
   html {
     font-size: 55%;
@@ -1065,9 +1057,7 @@ footer {
   }
 }
 
-/*============================
-  15. UTILITY CLASSES
-============================*/
+/* UTILITY CLASSES */
 .text-center {
   text-align: center;
 }
@@ -1080,9 +1070,7 @@ footer {
   margin-bottom: 5rem;
 }
 
-/*============================
-  16. SCROLLBAR STYLING
-============================*/
+/* SCROLLBAR STYLING */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -1100,9 +1088,7 @@ footer {
   background: var(--primary-dark);
 }
 
-/*============================
-  17. SELECTION COLOR
-============================*/
+/* SELECTION COLOR */
 ::selection {
   background: var(--primary);
   color: #000;
