@@ -1,0 +1,38 @@
+Website
+│
+├── Header
+│   ├── Logo
+│   ├── Navigation Menu
+│   └── Theme Toggle
+│
+├── Hero Section
+│   ├── Introduction
+│   ├── Statistics Counter
+│   └── CTA Buttons
+│
+├── Courses Section
+│   └── Course Card
+│       ├── Title
+│       ├── Credit Hours
+│       ├── Description
+│       └── Course Link
+│
+├── Resources Section
+│   ├── Resource Cards
+│   └── Video Showcase
+│
+├── About Section
+│   ├── Founder Info
+│   └── Mission
+│
+├── Registration Section
+│   └── Registration Form
+│       ├── Name
+│       ├── Email
+│       ├── Password
+│       └── Gender
+│
+├── Contact Section
+│   └── Social Links
+│
+└── Footer
