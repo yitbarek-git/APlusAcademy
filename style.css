@@ -243,8 +243,8 @@ body {
 /* Reveal Animations */
 .reveal {
   opacity: 0;
-  transform: translateY(80px);
-  transition: all 0.8s ease;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
 }
 
 .reveal.active {
@@ -370,12 +370,16 @@ section {
   background: var(--primary);
   color: #000;
 }
-
 .btn-primary:hover, .btn-primary:active {
   background: var(--primary-dark);
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
   transition: all 1s ease;
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn-outline {
@@ -384,12 +388,17 @@ section {
   border: 2px solid var(--primary);
 }
 
+
 .btn-outline:hover, .btn-outline:active {
   background: var(--primary);
   color: #000;
   transform: translateY(-3px);
   transition: all 1s ease;
-
+}
+.btn-outline:hover {
+  background: var(--primary);
+  color: #000;
+  transform: translateY(-3px);
 }
 
 .hero-image {

@@ -159,8 +159,7 @@ window.addEventListener("scroll", () => {
     logo.style.opacity = "1";
   }
 });
-
-//COUNTER ANIMATION
+// COUNTER ANIMATION - Repeating animation
 const counters = document.querySelectorAll(".counter");
 
 function formatNumber(num) {
@@ -172,11 +171,11 @@ function formatNumber(num) {
 
 function animateCounter(counter, target) {
   let start = 0;
-  const duration = 2500; 
+  const duration = 2000; // 2 seconds for full animation
   const stepTime = 20;
   const steps = duration / stepTime;
   const increment = target / steps;
-  
+
   const timer = setInterval(() => {
     start += increment;
     if (start >= target) {
@@ -191,23 +190,22 @@ function animateCounter(counter, target) {
 function startCounterLoop(counter) {
   const originalTarget = +counter.getAttribute("data-target");
   let currentTarget = originalTarget;
-  
+
   function runAnimation() {
-    const growthAmount = Math.floor(originalTarget * (0.05 + Math.random() * 0.1));
+    const growthAmount = Math.floor(
+      originalTarget * (0.05 + Math.random() * 0.1),
+    );
     currentTarget = originalTarget + growthAmount;
-    
-    // Update the displayed target
+
     counter.setAttribute("data-target", currentTarget);
 
     counter.innerText = "0";
     animateCounter(counter, currentTarget);
   }
-  
   runAnimation();
-  
-  setInterval(runAnimation, 8000);//repeat after 8 seconds
+  setInterval(runAnimation, 8000);
 }
 
-counters.forEach(counter => {
+counters.forEach((counter) => {
   startCounterLoop(counter);
 });
