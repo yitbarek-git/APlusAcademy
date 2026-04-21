@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
-/* 1. CSS VARIABLES / THEME */
+/* CSS VARIABLES / THEME */
 :root {
   --bg: #000;
   --text: #fff;
@@ -81,6 +81,23 @@ body {
 
 .logo:hover {
   transform: scale(1.1);
+}
+
+.logo img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  transition: 0.3s ease;
+  border-radius: 50%;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+@media (max-width: 600px) {
+  .logo img {
+    height: 35px;
+  }
 }
 
 #theme-toggle {
@@ -370,7 +387,8 @@ section {
   background: var(--primary);
   color: #000;
 }
-.btn-primary:hover, .btn-primary:active {
+.btn-primary:hover,
+.btn-primary:active {
   background: var(--primary-dark);
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
@@ -388,8 +406,8 @@ section {
   border: 2px solid var(--primary);
 }
 
-
-.btn-outline:hover, .btn-outline:active {
+.btn-outline:hover,
+.btn-outline:active {
   background: var(--primary);
   color: #000;
   transform: translateY(-3px);
@@ -634,7 +652,8 @@ section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5rem;
-  align-items: start;
+  align-items: center;
+  justify-content: center;
 }
 
 .founder-card,
@@ -701,7 +720,7 @@ section {
 
 .about-image img {
   width: 100%;
-  max-width: 200px;
+  max-width: 400px;
   border-radius: 50%;
   border: 3px solid var(--primary);
   box-shadow: var(--shadow-lg);
