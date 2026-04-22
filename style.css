@@ -224,7 +224,6 @@ body {
     transition: 0.4s ease;
     border-left: 2px solid var(--primary);
     border-bottom: 1px dashed var(--primary);
-    border-top: 1px dashed var(--primary);
     box-shadow: -5px 0 30px var(--shadow);
   }
 

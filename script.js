@@ -7,7 +7,6 @@ menuBtn.addEventListener("click", (e) => {
   menuBtn.classList.toggle("open");
   navbar.classList.toggle("active");
 });
-
 // Close menu when clicking outside
 document.addEventListener("click", (e) => {
   if (!document.querySelector(".header").contains(e.target)) {
@@ -85,7 +84,7 @@ if (form) {
       return;
     }
 
-    if (password.length < 4) {
+    if (password.length < 8) {
       alert("Password must be at least 4 characters");
       return;
     }
