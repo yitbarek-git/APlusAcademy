@@ -423,11 +423,18 @@
           </div>
 
           <div class="about-image">
-            <img
-              src="profile.webp"
-              alt="Yitbarek - Founder of Aplus Academy"
-              loading="lazy"
-            />
+            <picture>
+              <source srcset="profile.avif" type="image/avif" />
+              <source srcset="profile.webp" type="image/webp" />
+              <img
+                src="profile.jpg"
+                alt="Yitbarek - Founder of Aplus Academy"
+                width="400"
+                height="400"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
           </div>
         </div>
       </section>

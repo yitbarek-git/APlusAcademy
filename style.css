@@ -715,20 +715,26 @@ section {
 .about-image {
   position: sticky;
   top: 100px;
+  contain: layout paint;
 }
-
 .about-image img {
   width: 100%;
   max-width: 400px;
+  height: auto;
+
+  object-fit: cover;
   border-radius: 50%;
   border: 3px solid var(--primary);
   box-shadow: var(--shadow-lg);
-  transition: var(--transition);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 .about-image img:hover {
   transform: scale(1.02);
-  box-shadow: 0 30px 50px var(--primary);
+  box-shadow: 0 20px 40px var(--primary);
 }
 
 /* REGISTRATION SECTION */
