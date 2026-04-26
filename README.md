@@ -85,7 +85,7 @@ The website serves as:
 
 ## 📍 Live Demo
 
-👉 https://yitbarek.github.io/Aplus-Academy/
+👉 (https://aplusacademy1.netlify.app/)
 
 ---
 
