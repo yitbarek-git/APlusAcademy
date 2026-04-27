@@ -828,6 +828,12 @@ textarea {
   margin-top: 3rem;
 }
 
+.success-message {
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-top: 2rem;
+}
 /* CONTACT / SOCIAL SECTION */
 .social-grid {
   display: grid;

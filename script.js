@@ -34,8 +34,7 @@
     errorEl.textContent = message;
 
     const formGroup = errorEl.closest(".form-group");
-    const field =
-      formGroup && formGroup.querySelector("input, textarea, select");
+    const field = formGroup && formGroup.querySelector("input, textarea, select");
 
     if (field) {
       field.classList.add("error-border");
@@ -204,30 +203,40 @@
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-
+    
       if (!validate()) return;
-
-      const email = emailInput ? emailInput.value.trim() : "";
-
+    
       submitBtn.textContent = "Processing...";
       submitBtn.classList.add("loading");
       submitBtn.disabled = true;
-
+    
       window.setTimeout(() => {
-        submitBtn.textContent = "✅ Registered Successfully";
+        submitBtn.textContent = "Registered ✔";
         submitBtn.classList.remove("loading");
         submitBtn.classList.add("success-btn");
-
-        form.reset();
+        submitBtn.disabled = true;
+    
         clearErrors(form);
-
+        form.reset();
+    
+        const successMsg = document.getElementById("formSuccess");
+        if (successMsg) {
+          successMsg.textContent = `Registration successful🎉 \n we will contact you soon 📩`;
+          successMsg.style.display = "block";
+        }
+    
         window.setTimeout(() => {
-          resetButtonState();
-        }, 5000);
+          submitBtn.textContent = "Registered ✔";
+          submitBtn.classList.remove("success-btn");
+          submitBtn.disabled = true;
+    
+          if (successMsg) successMsg.textContent = "";
+        }, 2500);
+    
       }, 1000);
     });
 
-    // Optional live validation
+  
     if (nameInput) {
       nameInput.addEventListener("input", () => clearFieldError(nameInput));
     }
@@ -235,9 +244,7 @@
       emailInput.addEventListener("input", () => clearFieldError(emailInput));
     }
     if (passwordInput) {
-      passwordInput.addEventListener("input", () =>
-        clearFieldError(passwordInput),
-      );
+      passwordInput.addEventListener("input", () => clearFieldError(passwordInput));
     }
     genderInputs.forEach((radio) => {
       radio.addEventListener("change", () => clearFieldError(radio));
@@ -303,10 +310,7 @@
       });
 
       navLinks.forEach((link) => {
-        link.classList.toggle(
-          "active",
-          link.getAttribute("href") === `#${current}`,
-        );
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}`);
       });
     };
 
@@ -358,9 +362,7 @@
       const originalTarget = Number(counter.getAttribute("data-target")) || 0;
 
       const runAnimation = () => {
-        const growthAmount = Math.floor(
-          originalTarget * (0.05 + Math.random() * 0.1),
-        );
+        const growthAmount = Math.floor(originalTarget * (0.05 + Math.random() * 0.1));
         const currentTarget = originalTarget + growthAmount;
 
         counter.setAttribute("data-target", String(currentTarget));
