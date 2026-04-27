@@ -1,210 +1,377 @@
-// MOBILE MENU (Hamburger)
-const menuBtn = document.getElementById("menu-btn");
-const navbar = document.querySelector(".navbar");
+(() => {
+  "use strict";
 
-menuBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  menuBtn.classList.toggle("open");
-  navbar.classList.toggle("active");
-});
-// Close menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!document.querySelector(".header").contains(e.target)) {
-    menuBtn.classList.remove("open");
-    navbar.classList.remove("active");
-  }
-});
-
-// Close menu when clicking a link
-document.querySelectorAll(".navbar a").forEach((link) => {
-  link.addEventListener("click", () => {
-    menuBtn.classList.remove("open");
-    navbar.classList.remove("active");
+  document.addEventListener("DOMContentLoaded", () => {
+    initMobileMenu();
+    initThemeToggle();
+    initRevealOnScroll();
+    initFormValidation();
+    initSmoothScrolling();
+    initVideoHoverPlayback();
+    initActiveNavHighlight();
+    initLogoFade();
+    initCounters();
   });
-});
 
-//  DARK/LIGHT MODE
-const themeToggle = document.getElementById("theme-toggle");
-const body = document.body;
-
-// Check saved theme
-if (localStorage.getItem("aplus-theme") === "light") {
-  body.classList.add("light");
-  themeToggle.classList.replace("fa-moon", "fa-sun");
-}
-
-themeToggle.addEventListener("click", () => {
-  body.classList.toggle("light");
-
-  if (body.classList.contains("light")) {
-    themeToggle.classList.replace("fa-moon", "fa-sun");
-    localStorage.setItem("aplus-theme", "light");
-  } else {
-    themeToggle.classList.replace("fa-sun", "fa-moon");
-    localStorage.setItem("aplus-theme", "dark");
+  // ---------- Shared helpers ----------
+  function $(selector, scope = document) {
+    return scope.querySelector(selector);
   }
-});
 
-// Reveal Animations
-const elementsToReveal = document.querySelectorAll(".reveal");
+  function $all(selector, scope = document) {
+    return Array.from(scope.querySelectorAll(selector));
+  }
 
-function checkRevealOnScroll() {
-  const windowHeight = window.innerHeight;
-  elementsToReveal.forEach((el) => {
-    if (el.getBoundingClientRect().top < windowHeight - 0) {
-      el.classList.add("active");
+  function safeAddEvent(target, event, handler, options) {
+    if (target) target.addEventListener(event, handler, options);
+  }
+
+  // ---------- Error handling ----------
+  function showError(errorId, message) {
+    const errorEl = document.getElementById(errorId);
+    if (!errorEl) return;
+
+    errorEl.textContent = message;
+
+    const formGroup = errorEl.closest(".form-group");
+    const field =
+      formGroup && formGroup.querySelector("input, textarea, select");
+
+    if (field) {
+      field.classList.add("error-border");
+      field.setAttribute("aria-invalid", "true");
     }
-  });
-}
+  }
 
-window.addEventListener("scroll", checkRevealOnScroll);
-window.addEventListener("load", checkRevealOnScroll);
-checkRevealOnScroll();
+  function clearErrors(form) {
+    if (!form) return;
 
-//  FORM VALIDATION (Clean & simple)
-const form = document.getElementById("registration-form");
+    $all(".error", form).forEach((el) => {
+      el.textContent = "";
+    });
 
-if (form) {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+    $all(".error-border", form).forEach((el) => {
+      el.classList.remove("error-border");
+      el.removeAttribute("aria-invalid");
+    });
+  }
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const gender = document.querySelector('input[name="gender"]:checked');
+  function clearFieldError(field) {
+    if (!field) return;
 
-    // Simple checks
-    if (!name || name.length < 3) {
-      alert("Please enter your full name (min 3 characters)");
-      return;
+    field.classList.remove("error-border");
+    field.removeAttribute("aria-invalid");
+
+    const formGroup = field.closest(".form-group");
+    const errorEl = formGroup && formGroup.querySelector(".error");
+    if (errorEl) errorEl.textContent = "";
+  }
+
+  // ---------- Mobile menu ----------
+  function initMobileMenu() {
+    const menuBtn = document.getElementById("menu-btn");
+    const navbar = document.querySelector(".navbar");
+    const header = document.querySelector(".header");
+
+    if (!menuBtn || !navbar || !header) return;
+
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menuBtn.classList.toggle("open");
+      navbar.classList.toggle("active");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!header.contains(e.target)) {
+        menuBtn.classList.remove("open");
+        navbar.classList.remove("active");
+      }
+    });
+
+    $all(".navbar a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menuBtn.classList.remove("open");
+        navbar.classList.remove("active");
+      });
+    });
+  }
+
+  // ---------- Theme toggle ----------
+  function initThemeToggle() {
+    const themeToggle = document.getElementById("theme-toggle");
+    const body = document.body;
+
+    if (!themeToggle) return;
+
+    const savedTheme = localStorage.getItem("aplus-theme");
+
+    if (savedTheme === "light") {
+      body.classList.add("light");
+      themeToggle.classList.replace("fa-moon", "fa-sun");
     }
 
-    if (!email.includes("@") || !email.includes(".")) {
-      alert("Please enter a valid email address");
-      return;
-    }
+    themeToggle.addEventListener("click", () => {
+      const isLight = body.classList.toggle("light");
 
-    if (password.length < 8) {
-      alert("Password must be at least 4 characters");
-      return;
-    }
+      themeToggle.classList.toggle("fa-sun", isLight);
+      themeToggle.classList.toggle("fa-moon", !isLight);
+      localStorage.setItem("aplus-theme", isLight ? "light" : "dark");
+    });
+  }
 
-    if (!gender) {
-      alert("Please select your gender");
-      return;
-    }
+  // ---------- Reveal animations ----------
+  function initRevealOnScroll() {
+    const revealEls = $all(".reveal");
+    if (!revealEls.length) return;
 
-    // Success!
-    alert(
-      `✅ Thank you ${name}! You've successfully joined Aplus Academy. We'll contact you at ${email}`,
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 },
     );
-    form.reset();
-  });
-}
 
-//  SMOOTH SCROLLING
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute("href"));
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-});
-
-//VIDEO PLAY/PAUSE ON HOVER (Optional)
-const videos = document.querySelectorAll(".video-card video");
-
-videos.forEach((video) => {
-  video.parentElement.addEventListener("mouseenter", () => {
-    video.play().catch(() => {}); // Ignore autoplay errors
-  });
-
-  video.parentElement.addEventListener("mouseleave", () => {
-    video.pause();
-  });
-});
-
-// ACTIVE NAVIGATION HIGHLIGHT
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".navbar a");
-
-window.addEventListener("scroll", () => {
-  let current = "";
-
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop - 100;
-    if (window.scrollY >= sectionTop) {
-      current = section.getAttribute("id");
-    }
-  });
-
-  navLinks.forEach((link) => {
-    link.classList.remove("active");
-    if (link.getAttribute("href") === `#${current}`) {
-      link.classList.add("active");
-    }
-  });
-});
-
-// LOGO FADE ON SCROLL (Like your portfolio)
-const logo = document.querySelector(".logo");
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 100) {
-    logo.style.opacity = "0.7";
-  } else {
-    logo.style.opacity = "1";
+    revealEls.forEach((el) => observer.observe(el));
   }
-});
-// COUNTER ANIMATION - Repeating animation
-const counters = document.querySelectorAll(".counter");
 
-function formatNumber(num) {
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + "K+";
-  }
-  return num + "+";
-}
+  // ---------- Form validation ----------
+  function initFormValidation() {
+    const form = document.getElementById("registration-form");
+    if (!form) return;
 
-function animateCounter(counter, target) {
-  let start = 0;
-  const duration = 2000; // 2 seconds for full animation
-  const stepTime = 20;
-  const steps = duration / stepTime;
-  const increment = target / steps;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (!submitBtn) return;
 
-  const timer = setInterval(() => {
-    start += increment;
-    if (start >= target) {
-      counter.innerText = formatNumber(target);
-      clearInterval(timer);
-    } else {
-      counter.innerText = formatNumber(Math.ceil(start));
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const genderInputs = $all('input[name="gender"]', form);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    const validate = () => {
+      clearErrors(form);
+
+      const name = nameInput ? nameInput.value.trim() : "";
+      const email = emailInput ? emailInput.value.trim() : "";
+      const password = passwordInput ? passwordInput.value : "";
+      const gender = form.querySelector('input[name="gender"]:checked');
+
+      let isValid = true;
+
+      if (!name) {
+        showError("nameError", "Name is required.");
+        isValid = false;
+      } else if (name.length < 5) {
+        showError("nameError", "Name must be at least 5 characters.");
+        isValid = false;
+      }
+
+      if (!email) {
+        showError("emailError", "Email is required.");
+        isValid = false;
+      } else if (!emailRegex.test(email)) {
+        showError("emailError", "Enter a valid email address.");
+        isValid = false;
+      }
+
+      if (!password) {
+        showError("passwordError", "Password is required.");
+        isValid = false;
+      } else if (password.length < 8) {
+        showError("passwordError", "Password must be at least 8 characters.");
+        isValid = false;
+      }
+
+      if (!gender) {
+        showError("genderError", "Please select your gender.");
+        isValid = false;
+      }
+
+      return isValid;
+    };
+
+    const resetButtonState = () => {
+      submitBtn.textContent = "Join Academy";
+      submitBtn.classList.remove("success-btn", "loading");
+      submitBtn.disabled = false;
+    };
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!validate()) return;
+
+      const email = emailInput ? emailInput.value.trim() : "";
+
+      submitBtn.textContent = "Processing...";
+      submitBtn.classList.add("loading");
+      submitBtn.disabled = true;
+
+      window.setTimeout(() => {
+        submitBtn.textContent = "✅ Registered Successfully";
+        submitBtn.classList.remove("loading");
+        submitBtn.classList.add("success-btn");
+
+        form.reset();
+        clearErrors(form);
+
+        window.setTimeout(() => {
+          resetButtonState();
+        }, 5000);
+      }, 1000);
+    });
+
+    // Optional live validation
+    if (nameInput) {
+      nameInput.addEventListener("input", () => clearFieldError(nameInput));
     }
-  }, stepTime);
-}
+    if (emailInput) {
+      emailInput.addEventListener("input", () => clearFieldError(emailInput));
+    }
+    if (passwordInput) {
+      passwordInput.addEventListener("input", () =>
+        clearFieldError(passwordInput),
+      );
+    }
+    genderInputs.forEach((radio) => {
+      radio.addEventListener("change", () => clearFieldError(radio));
+    });
 
-function startCounterLoop(counter) {
-  const originalTarget = +counter.getAttribute("data-target");
-  let currentTarget = originalTarget;
-
-  function runAnimation() {
-    const growthAmount = Math.floor(
-      originalTarget * (0.05 + Math.random() * 0.1),
-    );
-    currentTarget = originalTarget + growthAmount;
-
-    counter.setAttribute("data-target", currentTarget);
-
-    counter.innerText = "0";
-    animateCounter(counter, currentTarget);
+    form.addEventListener("reset", () => {
+      window.setTimeout(() => {
+        clearErrors(form);
+        resetButtonState();
+      }, 0);
+    });
   }
-  runAnimation();
-  setInterval(runAnimation, 8000);
-}
 
-counters.forEach((counter) => {
-  startCounterLoop(counter);
-});
+  // ---------- Smooth scrolling ----------
+  function initSmoothScrolling() {
+    $all('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        const href = this.getAttribute("href");
+        if (!href || href === "#") return;
+
+        const target = document.querySelector(href);
+        if (!target) return;
+
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
+  // ---------- Video hover playback ----------
+  function initVideoHoverPlayback() {
+    const videos = $all(".video-card video");
+    if (!videos.length) return;
+
+    videos.forEach((video) => {
+      const card = video.closest(".video-card");
+      if (!card) return;
+
+      card.addEventListener("mouseenter", () => {
+        video.play().catch(() => {});
+      });
+
+      card.addEventListener("mouseleave", () => {
+        video.pause();
+      });
+    });
+  }
+
+  // ---------- Active nav highlight ----------
+  function initActiveNavHighlight() {
+    const sections = $all("section[id]");
+    const navLinks = $all(".navbar a");
+    if (!sections.length || !navLinks.length) return;
+
+    const setActiveLink = () => {
+      let current = "";
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 120;
+        if (window.scrollY >= sectionTop) {
+          current = section.id;
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.toggle(
+          "active",
+          link.getAttribute("href") === `#${current}`,
+        );
+      });
+    };
+
+    window.addEventListener("scroll", setActiveLink, { passive: true });
+    setActiveLink();
+  }
+
+  // ---------- Logo fade ----------
+  function initLogoFade() {
+    const logo = document.querySelector(".logo");
+    if (!logo) return;
+
+    const onScroll = () => {
+      logo.style.opacity = window.scrollY > 100 ? "0.7" : "1";
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  // ---------- Counters ----------
+  function initCounters() {
+    const counters = $all(".counter");
+    if (!counters.length) return;
+
+    function formatNumber(num) {
+      return num >= 1000 ? `${(num / 1000).toFixed(1)}K+` : `${num}+`;
+    }
+
+    function animateCounter(counter, target) {
+      let start = 0;
+      const duration = 2000;
+      const stepTime = 20;
+      const steps = duration / stepTime;
+      const increment = target / steps;
+
+      const timer = window.setInterval(() => {
+        start += increment;
+        if (start >= target) {
+          counter.innerText = formatNumber(target);
+          clearInterval(timer);
+        } else {
+          counter.innerText = formatNumber(Math.ceil(start));
+        }
+      }, stepTime);
+    }
+
+    function startCounterLoop(counter) {
+      const originalTarget = Number(counter.getAttribute("data-target")) || 0;
+
+      const runAnimation = () => {
+        const growthAmount = Math.floor(
+          originalTarget * (0.05 + Math.random() * 0.1),
+        );
+        const currentTarget = originalTarget + growthAmount;
+
+        counter.setAttribute("data-target", String(currentTarget));
+        counter.innerText = "0";
+        animateCounter(counter, currentTarget);
+      };
+
+      runAnimation();
+      window.setInterval(runAnimation, 8000);
+    }
+
+    counters.forEach(startCounterLoop);
+  }
+})();
